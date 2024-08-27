@@ -1,0 +1,197 @@
+const quizQuestions = [
+  {
+    question: "1. What comes next in the sequence: 2, 4, 8, 16, ?",
+    answers: {
+      a: "20",
+      b: "24",
+      c: "32",
+      d: "40"
+    },
+    correctAnswer: "c"
+  },
+  {
+    question: "2. Which number is the odd one out: 3, 5, 7, 9, 11?",
+    answers: {
+      a: "3",
+      b: "5",
+      c: "9",
+      d: "11"
+    },
+    correctAnswer: "c"
+  },
+  {
+    question: "3. Which letter comes next in the series: A, C, E, G, ?",
+    answers: {
+      a: "H",
+      b: "I",
+      c: "J",
+      d: "K"
+    },
+    correctAnswer: "b"
+  },
+  {
+    question: "4. What is the missing number in the sequence: 1, 4, 9, 16, ?, 36?",
+    answers: {
+      a: "25",
+      b: "20",
+      c: "30",
+      d: "29"
+    },
+    correctAnswer: "a"
+  },
+  {
+    question: "5. Find the next number in the pattern: 5, 10, 20, 40, ?",
+    answers: {
+      a: "45",
+      b: "50",
+      c: "60",
+      d: "80"
+    },
+    correctAnswer: "d"
+  },
+  {
+    question: "6. Which number should come next in the series: 1, 1, 2, 3, 5, 8, ?",
+    answers: {
+      a: "11",
+      b: "12",
+      c: "13",
+      d: "14"
+    },
+    correctAnswer: "c"
+  },
+  {
+    question: "7. What comes next in the sequence: 2, 3, 5, 7, 11, ?",
+    answers: {
+      a: "13",
+      b: "14",
+      c: "15",
+      d: "16"
+    },
+    correctAnswer: "a"
+  },
+  {
+    question: "8. Find the missing number: 6, 11, 21, 36, ?",
+    answers: {
+      a: "45",
+      b: "51",
+      c: "56",
+      d: "63"
+    },
+    correctAnswer: "c"
+  },
+  {
+    question: "9. What is the next number in the series: 4, 6, 9, 13, ?",
+    answers: {
+      a: "16",
+      b: "17",
+      c: "18",
+      d: "19"
+    },
+    correctAnswer: "a"
+  },
+  {
+    question: "10. Which number is the odd one out: 2, 4, 6, 8, 9?",
+    answers: {
+      a: "2",
+      b: "6",
+      c: "8",
+      d: "9"
+    },
+    correctAnswer: "d"
+  }
+  ];
+  
+  // Variables to track quiz state
+  let currentQuestionIndex = 0;
+  let score = 0;
+  let timeLeft = 30;
+  let timerInterval;
+  
+  // Function to start the quiz
+  function startQuiz() {
+    // Hide the start button and display the first question
+    document.getElementById("start-button").style.display = "none";
+    displayQuestion();
+    startTimer();
+  }
+  
+  // Function to display a question and its options
+  function displayQuestion() {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+    const questionText = document.getElementById("question-text");
+    const answerButtons = document.getElementById("answer-buttons");
+  
+    // Clear previous question and answer options
+    questionText.innerHTML = "";
+    answerButtons.innerHTML = "";
+  
+    // Display the current question
+    questionText.innerHTML = currentQuestion.question;
+  
+    // Create answer buttons for each option
+    currentQuestion.options.forEach(option => {
+      const button = document.createElement("button");
+      button.innerText = option;
+      button.classList.add("answer-button");
+      answerButtons.appendChild(button);
+  
+      // Add click event listener to check the answer
+      button.addEventListener("click", function() {
+        checkAnswer(option);
+      });
+    });
+  }
+  
+  // Function to check the selected answer
+  function checkAnswer(selectedOption) {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+  
+    // Check if the selected answer is correct
+    if (selectedOption === currentQuestion.answer) {
+      score++;
+    }
+  
+    // Move to the next question or end the quiz if all questions are answered
+    currentQuestionIndex++;
+  
+    if (currentQuestionIndex < quizQuestions.length) {
+      displayQuestion();
+    } else {
+      endQuiz();
+    }
+  }
+  
+  // Function to start the timer
+  function startTimer() {
+    timerInterval = setInterval(function() {
+      timeLeft--;
+  
+      // Update the timer text
+      document.getElementById("timer").textContent = timeLeft;
+  
+      // End the quiz if time runs out
+      if (timeLeft <= 0) {
+        endQuiz();
+      }
+    }, 1000);
+  }
+  
+  // Function to end the quiz
+  function endQuiz() {
+    // Stop the timer
+    clearInterval(timerInterval);
+  
+    // Calculate the score percentage
+    const scorePercentage = (score / quizQuestions.length) * 100;
+  
+    // Display the final score
+    const questionContainer = document.getElementById("question-container");
+    questionContainer.innerHTML = `
+      <h2>Quiz Completed!</h2>
+      <p>Your Score: ${score} out of ${quizQuestions.length}</p>
+      <p>Score Percentage: ${scorePercentage}%</p>
+    `;
+  }
+  
+  // Add event listener to start the quiz when the start button is clicked
+  document.getElementById("start-button").addEventListener("click", startQuiz);

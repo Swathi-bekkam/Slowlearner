@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Information</h1>
+    <table id="user-info">
+        <!-- Data will be inserted here by JavaScript -->
+    </table>
+    <script>
+        window.onload = function() {
+            const results = JSON.parse(localStorage.getItem("quizResults"));
+
+            if (results) {
+                const table = document.getElementById("user-info");
+                table.innerHTML = `
+                    <tr>
+                        <th>Name</th>
+                        <td>${results.name}</td>
+                    </tr>
+                    <tr>
+                        <th>Quiz Score</th>
+                        <td>${results.score} / 10</td>
+                    </tr>
+                    <tr>
+                        <th>Logical Thinking Quiz Score</th>
+                        <td>${results.percentage}%</td>
+                    </tr>
+                    <tr>
+                        <th>Type of Learner</th>
+                        <td>${results.typeOfLearner}</td>
+                    </tr>
+                `;
+            } else {
+                document.body.innerHTML = '<h2>No quiz data found. Please complete the quiz first.</h2>';
+            }
+        }
+    </script>
+</body>
+</html>
